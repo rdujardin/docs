@@ -5,7 +5,7 @@ section: "Configuration de l'hébergement"
 order: 1
 ---
 
-**Dernière mise à jour le 25/11/2019**
+**Dernière mise à jour le 25/11/2020**
 
 Vous trouverez sur cette page les informations concernant les languages utilisés sur nos hébergements web ainsi que leurs versions disponibles.
 
