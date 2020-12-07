@@ -9,7 +9,7 @@ Connectez-vous à votre [espace client](https://www.ovhtelecom.fr/espaceclient/l
 
 Cliquez ensuite sur la ligne de Fax (pro) désirée.
 
-![](images/img_4241.jpg){.thumbnail}
+![](images/FAX.png){.thumbnail}
 
 
 ## EcoFax Pro
