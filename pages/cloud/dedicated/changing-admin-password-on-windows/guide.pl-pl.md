@@ -5,15 +5,16 @@ excerpt: 'Dowiedz się, jak zmienić hasło administratora na serwerze dedykowan
 section: 'Diagnostyka i tryb Rescue'
 ---
 
-**Ostatnia aktualizacja z dnia 16/12/2020**
+**Ostatnia aktualizacja z dnia 16 grudnia 2020 r**
 
 > [!primary]
 > Tłumaczenie zostało wygenerowane automatycznie przez system naszego partnera SYSTRAN. W niektórych przypadkach mogą wystąpić nieprecyzyjne sformułowania, na przykład w tłumaczeniu nazw przycisków lub szczegółów technicznych. W przypadku jakichkolwiek wątpliwości zalecamy zapoznanie się z angielską/francuską wersją przewodnika. Jeśli chcesz przyczynić się do ulepszenia tłumaczenia, kliknij przycisk „Zaproponuj zmianę” na tej stronie.
 > 
 
+
 ## Wprowadzenie
 
-Podczas instalacji lub reinstalacji systemu operacyjnego Windows otrzymujesz hasło administratora. Rekomendujemy jego zmianę zgodnie z instrukcją zawartą w przewodniku o bezpieczeństwie [serwera dedykowanego](../porady-zabezpieczanie-serwera-dedykowanego/). Jeśli utraciłeś hasło administratora, zresetuj je w trybie Rescue.
+Podczas instalacji lub reinstalacji systemu operacyjnego Windows otrzymujesz hasło administratora. Rekomendujemy jego zmianę zgodnie z instrukcją zawartą w przewodniku o bezpieczeństwie [serwera dedykowanego](../porady-zabezpieczanie-serwera-dedykowanego/){.external}. Jeśli utraciłeś hasło administratora, zresetuj je w trybie Rescue.
 
 **Niniejszy przewodnik ułatwi Ci przeprowadzenie przez cały proces zmiany hasła administratora Twojego serwera poprzez konfiguracje trybu Rescue dostępne dla systemu operacyjnego Windows.**
 
@@ -32,14 +33,14 @@ Kolejne etapy opisują proces zmiany lokalnego hasła administratora w trybie Re
 System musi zostać uruchomiony w trybie Rescue, zanim będzie można zmienić hasło administratora. Zaloguj się do [Panelu klienta OVHcloud](https://www.ovh.com/auth/?action=gotomanager), przejdź do sekcji `Bare Metal Cloud`{.action} i wybierz Twój serwer z listy nawigacyjnej po lewej stronie pod `Serwery dedykowane`{.action}.
 
 Netboot musi zostać przełączony na "rescue64-pro (Customer rescue system (Linux)". Wyszukaj "Boot" w sekcji **Informacje ogólne** i kliknij `...`{.action}, a następnie `Zmień`{.action}.
-<br>W oknie, które się wyświetla zaznacz **Uruchom w trybie diagnostycznym (Rescue).** i w menu wybierz "rescue64-pro". Określ adres e-mail w ostatnim polu, jeśli dane do logowania mają zostać wysłane na adres inny niż adres główny Twojego konta OVHcloud. 
+<br>W oknie, które się wyświetla zaznacz **Uruchom w trybie Rescue** i w menu wybierz "rescue64-pro". Określ adres e-mail w ostatnim polu, jeśli dane do logowania mają zostać wysłane na adres inny niż adres główny Twojego konta OVHcloud. 
 
 Kliknij `Dalej`{.action}, a następnie `Zatwierdź`{.action}.
 
 ![rescuemode](images/adminpw_win_01.png){.thumbnail}
 
 Po zakończeniu modyfikacji kliknij `...`{.action} po prawej stronie "Status" w obszarze zatytułowanym **Status**.
-<br>Kliknij `Restart`{.action}, a serwer zrestartuje się w trybie rescue. Operacja ta może zająć kilka minut.
+<br>Kliknij `Zrestartuj`{.action}, a serwer zrestartuje się w trybie rescue. Operacja ta może zająć kilka minut.
 <br>Możesz sprawdzić postęp w zakładce `Zadania`{.action}. Otrzymasz e-mail z danymi do logowania dla użytkownika "root" trybu Rescue.
 
 ![rescuereboot](images/adminpw_win_02.png){.thumbnail}
@@ -48,18 +49,19 @@ Więcej informacji o trybie Rescue znajdziesz w [tym przewodniku](../ovh-rescue/
 
 ### Etap 2: montowanie partycji systemu
 
-Zaloguj się do serwera przez SSH. Jeśli potrzebujesz pomocy, zapoznaj się z przewodnikiem dotyczącym >systemu Windows, partycje będą zatytułowane "Microsoft LDM data".
+Zaloguj się do serwera przez SSH. Jeśli potrzebujesz pomocy, zapoznaj się z przewodnikiem dotyczącym.
+<br>systemu Windows, partycje będą zatytułowane "Microsoft LDM data".
 
 ```
 # fdisk -l
 Disk /dev/sda: 1.8 TiB, 2000398934016 bytes, 3907029168 sectors
-Units: sectors of 1 * 512 = 512 bytes
+Jednostki: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disklabel type: gpt
 Disk identifier: 54A5B25A-75B9-4355-9185-8CD958DCF32A
  
-Device          Start        End    Sectors  Size Type
+Device Start End Sectors Size
 /dev/sda1        2048     718847     716800  350M EFI System
 /dev/sda2      718848     720895       2048    1M Microsoft LDM metadata
 /dev/sda3      720896     980991     260096  127M Microsoft reserved
@@ -67,7 +69,7 @@ Device          Start        End    Sectors  Size Type
 /dev/sda5  3907028992 3907029134        143 71.5K Microsoft LDM data
 ```
 
-W tym przykładzie "sda4" oznacza partycję systemu, określoną przez jej rozmiar. Na ogół istnieje również druga partycja lustrzana, która w tym przypadku nosi nazwę "/dev/sdb**X**". W większości przypadków serwer będzie miał kilka dysków z identycznymi schematami partycji. W przypadku procesu resetowania hasła ważne jest tylko to pierwsze. 
+W tym przykładzie "sda4" oznacza partycję systemu, określoną przez jej rozmiar. Na ogół istnieje również druga partycja lustrzana, która w tym przypadku nosi nazwę "/dev/**sdbX**". W większości przypadków serwer będzie miał kilka dysków z identycznymi schematami partycji. W przypadku procesu resetowania hasła ważne jest tylko to pierwsze. 
 
 Teraz zamontuj tę partycję:
 
@@ -81,28 +83,28 @@ Sprawdź punkt montowania:
 # lsblk
 NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
 sdb      8:16   0  1.8T  0 disk
-├─sdb4   8:20   0  1.8T  0 part
-├─sdb2   8:18   0    1M  0 part
-├─sdb5   8:21   0 71.5K  0 part
-├─sdb3   8:19   0  127M  0 part
-└─sdb1   8:17   0  350M  0 part
-sda      8:0    0  1.8T  0 disk
-├─sda4   8:4    0  1.8T  0 part /mnt
-├─sda2   8:2    0    1M  0 part
-├─sda5   8:5    0 71.5K  0 part
-├─sda3   8:3    0  127M  0 part
-└─sda1   8:1    0  350M  0 part
+├─sdb4 8:20 0 1.8T 0 part
+├─sdb2 8:18 0 1M 0 part
+├─sdb5 8:21 0 71.5K 0 part
+├─sdb3 8:19 0 127M 0 part
+└─sdb1 8:17 0 350M 0 part
+sda 8:0 0 1.8T 0 disk
+├─da4 8:4 0 1.8T 0 part /mnt
+├ mięsda2 8:2 0 1M 0 part
+├─da5 8:5 0 71.5K 0 part
+├ mięsda3 8:3 0 127M 0 part
+└ mięsda1 8:1 0 350M 0 part
 ```
 
 W powyższym przykładzie operacja powiodła się. Jeśli instalacja nie powiodła się, prawdopodobnie otrzymasz komunikat błędu podobny do tego: 
 
 ```
 The disk contains an unclean file system (0, 0).
-Metadata kept in Windows cache, refused to mount.
+Metadata kept in Windows cache.
 Failed to mount '/dev/sda4': Operation not permitted
-The NTFS partition is in an unsafe state. Please resume and shutdown
-Windows fully (no hibernation or fast restarting), or mount the volume
-read-only with the 'ro' mount option.
+NTFS partycji is in an unsafe state. Please resume and shutdown
+Windows fully (no hibernation or fast restarting), or mount the Volume
+read-only with the 'ro' mount opcja.
 ```
 
 W takim przypadku użyj następującego polecenia i spróbuj ponownie zamontować partycję.
@@ -120,13 +122,13 @@ Etap ten polega na manipulowaniu plikiem *SAM* przy użyciu narzędzia pozwalaj�
 # cd /mnt/Windows/System32/config
 /mnt/Windows/System32/config# chntpw -l SAM
 
-chntpw version 1.00 140201, (c) Petter N Hagen
+chntpw wersja 1.00 140201, (c) Petter N Hagen
 Hive <SAM> name (from header): <\SystemRoot\System32\Config\SAM>
 ROOT KEY at offset: 0x001020 * Subkey indexing type is: 686c <lh>
-File size 65536 [10000] bytes, containing 8 pages (+ 1 headerpage)
-Used for data: 359/39024 blocks/bytes, unused: 33/18064 blocks/bytes.
+File size 65536 [10000] bytes, containing 8 strony (+ 1 headerpage)
+Used for data: 359/39024 blocks/bytes, unused: 33/18064 bloków/bytes.
 
-| RID -|---------- Username ------------| Admin? |- Lock? --|
+| RID -|— Username -| Admin? | - Lock? -|
 | 03e8 | admin                          | ADMIN  | dis/lock |
 | 01f4 | Administrator                  | ADMIN  | dis/lock |
 | 01f7 | DefaultAccount                 |        | dis/lock |
@@ -138,32 +140,32 @@ Usuń hasło użytkownika administratora za pomocą następującego polecenia. (
 
 ```
 # chntpw -u admin SAM
-chntpw version 1.00 140201, (c) Petter N Hagen
+chntpw wersja 1.00 140201, (c) Petter N Hagen
 Hive <SAM> name (from header): <\SystemRoot\System32\Config\SAM>
 ROOT KEY at offset: 0x001020 * Subkey indexing type is: 686c <lh>
-File size 65536 [10000] bytes, containing 8 pages (+ 1 headerpage)
-Used for data: 361/39344 blocks/bytes, unused: 35/13648 blocks/bytes.
+File size 65536 [10000] bytes, containing 8 strony (+ 1 headerpage)
+Used for data: 361/39344 blocks/bytes, unused: 35/13648 bloków/bytes.
  
-================= USER EDIT ====================
+================ USER EDIT ========================================================================================================================
  
-RID     : 1000 [03e8]a
+RID: 1000 [03e8]a
 Username: admin
 fullname:
-comment :
-homedir :
+jak:
+homedir:
  
-00000221 = Users (which has 3 members)
-00000220 = Administrators (which has 2 members)
+00000221 = Users (which has 3 członków)
+00000220 = Administratorzy (which has 2 członków)
  
 Account bits: 0x0010 =
-[ ] Disabled        | [ ] Homedir req.    | [ ] Passwd not req. |
-[ ] Temp. duplicate | [X] Normal account  | [ ] NMS account     |
+[ ] Nieobecny        | [ ] Homedir req.    | [ ] Passwd not req. |
+[ ] Temp. duplikat | [X] Normalny account  | [ ] NMS account     |
 [ ] Domain trust ac | [ ] Wks trust act.  | [ ] Srv trust act   |
-[ ] Pwd don't expir | [ ] Auto lockout    | [ ] (unknown 0x08)  |
+[ ] Pwd don't expires | [ ] Samochody    | [ ] (unknown 0x08)  |
 [ ] (unknown 0x10)  | [ ] (unknown 0x20)  | [ ] (unknown 0x40)  |
  
 Failed login count: 0, while max tries is: 0
-Total  login count: 5
+Razem login count: 5
  
 - - - - User Edit Menu:
  1 - Clear (blank) user password
@@ -175,31 +177,31 @@ Total  login count: 5
 Select: [q] >
 ```
 
-Wpisz "1" i naciśnij Enter ( ↩). (Należy najpierw skorzystać z opcji 2, jeśli przed "Disabled" pojawi się "X").
+Wpisz "1" i naciśnij Enter ( \\). (Należy najpierw skorzystać z opcji 2, jeśli przed "Disabled" pojawi się "X").
 
 ```
 Select: [q] > 1
 Password cleared!
-================= USER EDIT ====================
+================ USER EDIT ========================================================================================================================
  
-RID     : 1000 [03e8]
+RID: 1000 [03e8]
 Username: admin
 fullname:
-comment :
-homedir :
+jak:
+homedir:
  
-00000221 = Users (which has 3 members)
-00000220 = Administrators (which has 2 members)
+00000221 = Users (which has 3 członków)
+00000220 = Administratorzy (which has 2 członków)
  
 Account bits: 0x0010 =
-[ ] Disabled        | [ ] Homedir req.    | [ ] Passwd not req. |
-[ ] Temp. duplicate | [X] Normal account  | [ ] NMS account     |
+[ ] Nieobecny        | [ ] Homedir req.    | [ ] Passwd not req. |
+[ ] Temp. duplikat | [X] Normalny account  | [ ] NMS account     |
 [ ] Domain trust ac | [ ] Wks trust act.  | [ ] Srv trust act   |
-[ ] Pwd don't expir | [ ] Auto lockout    | [ ] (unknown 0x08)  |
+[ ] Pwd don't expires | [ ] Samochody    | [ ] (unknown 0x08)  |
 [ ] (unknown 0x10)  | [ ] (unknown 0x20)  | [ ] (unknown 0x40)  |
  
 Failed login count: 0, while max tries is: 0
-Total  login count: 5
+Razem login count: 5
 ** No NT MD4 hash found. This user probably has a BLANK password!
 ** No LANMAN hash found either. Try login with no password!
  
@@ -227,7 +229,7 @@ Write hive files? (y/n) [n]: tam
 
 ### Etap 4: restart serwera 
 
-Zacznij od zastąpienia netbootu **Uruchom z dysku twardego** w Panelu [klienta OVHcloud](https://www.ovh.com/auth/?action=gotomanager) (patrz [Etap 1](./#etap-1-restart-serwera-w-trybie-rescue)). 
+Zacznij od zastąpienia netbootu **Uruchom z dysku twardego** w Panelu [klienta OVHcloud](https://www.ovh.com/auth/?action=gotomanager) (patrz [Etap 1](./#etap-1-restart-serwera-w-trybie-rescue_1)). 
 
 Wróć do wiersza poleceń, odmontuj partycję i zrestartuj serwer, używając następujących poleceń:
 
@@ -253,7 +255,7 @@ Interfejs logowania powinien wyświetlać komunikat informujący o wygaśnięciu
 
 ![pwreset](images/adminpw_win_04.png){.thumbnail}
 
-Nowe hasło użytkownika admin musi zostać wprowadzone dwa razy. Jednak pole potwierdzenia nie jest jeszcze widoczne, co oznacza, że należy zostawić pierwsze pole puste, wpisać nowe hasło w drugim polu, a następnie użyć przycisku tabulacji (" ↹ ") klawiatury (wirtualnej), aby przejść do trzeciego pola ("Potwierdź hasło").
+Nowe hasło użytkownika admin musi zostać wprowadzone dwa razy. Jednak pole potwierdzenia nie jest jeszcze widoczne, co oznacza, że należy zostawić pierwsze pole puste, wpisać nowe hasło w drugim polu, a następnie użyć przycisku tabulacji (" ↹") klawiatury (wirtualnej), aby przejść do trzeciego pola ("Potwierdź hasło").
 <br>Wpisz ponownie hasło i kliknij strzałkę, aby je zarejestrować.
 
 ![enterpw](images/adminpw_win_05.png){.thumbnail}
@@ -272,12 +274,14 @@ Zdefiniuj hasło dla aktualnego użytkownika ("Administrator"):
 net user Administrator *
 ```
 
+
 ![administratorpw](images/adminpw_win_07.png){.thumbnail}
 
 > [!primary]
 >
 Zalecamy używanie wirtualnej klawiatury podczas wprowadzania haseł w tym interfejsie.
 >
+
 
 ### Reset hasła administratora za pomocą WinRescue
 
@@ -286,14 +290,14 @@ Zalecamy używanie wirtualnej klawiatury podczas wprowadzania haseł w tym inter
 System musi zostać uruchomiony w trybie Rescue, zanim będzie można zmienić hasło administratora. Zaloguj się do [Panelu klienta OVHcloud](https://www.ovh.com/auth/?action=gotomanager), przejdź do sekcji `Bare Metal Cloud`{.action} i wybierz Twój serwer z listy nawigacyjnej po lewej stronie pod `Serwery dedykowane`{.action}.
 
 Netboot musi zostać przełączony na WinRescue (Rescue System for Windows). Wyszukaj "Boot" w sekcji **Informacje ogólne** i kliknij `...`{.action}, a następnie `Zmień`{.action}.
-<br>W oknie, które się wyświetla zaznacz **Uruchom w trybie diagnostycznym (Rescue).** i w menu wybierz "WinRescue". Określ adres e-mail w ostatnim polu, jeśli dane do logowania mają zostać wysłane na adres inny niż adres główny Twojego konta OVHcloud. 
+<br>W oknie, które się wyświetla zaznacz **Uruchom w trybie Rescue** i w menu wybierz "WinRescue". Określ adres e-mail w ostatnim polu, jeśli dane do logowania mają zostać wysłane na adres inny niż adres główny Twojego konta OVHcloud. 
 
 Kliknij `Dalej`{.action}, a następnie `Zatwierdź`{.action}.
 
 ![winrescuemode](images/adminpw_win_08.png){.thumbnail}
 
 Po zakończeniu modyfikacji kliknij `...`{.action} po prawej stronie "Status" w obszarze zatytułowanym **Status**.
-<br>Kliknij `Restart`{.action}, a serwer zrestartuje się w trybie rescue. Operacja ta może zająć kilka minut.
+<br>Kliknij `Zrestartuj`{.action}, a serwer zrestartuje się w trybie rescue. Operacja ta może zająć kilka minut.
 <br>Możesz sprawdzić postęp w zakładce `Zadania`{.action}.
 <br>Otrzymasz e-mail z danymi do logowania (w tym hasłem do logowania) użytkownika "root" trybu Rescue.
 
@@ -325,11 +329,12 @@ Serwer musi zostać zrestartowany.
 
 #### Etap 3: zrestartuj serwer 
 
-Zacznij od zastąpienia netbootu **Uruchom z dysku twardego** w Panelu [klienta OVHcloud](https://www.ovh.com/auth/?action=gotomanager) (patrz [Etap 1](./#etap-1-restart-serwera-w-trybie-rescue)).
+Zacznij od zastąpienia netbootu **Uruchom z dysku twardego** w Panelu [klienta OVHcloud](https://www.ovh.com/auth/?action=gotomanager) (patrz [Etap 1](./#etape-1-redemarrer-le-serveur-en-mode-rescue_1)).
 
 W oknie KVM wybierz opcję zatrzymania `Wykonaj restart`{.action} za pomocą przycisku Windows "Uruchom" w lewym dolnym rogu.
 
-Przejdź do opisu operacji [5: zdefiniować nowe hasło (IPMI)](./#etap-5-zdefiniowanie-nowego-hasla-ipmi).
+Przejdź do opisu operacji [5: zdefiniować nowe hasło (IPMI)](./#etape-5-definir-un-nouveau-mot-de-passe-ipmi).
+
 
 ## Sprawdź również
 
